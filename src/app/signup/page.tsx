@@ -1,78 +1,94 @@
-'use client';
-
-import Link from 'next/link';
+"use client";
+import React, { useState } from 'react';
 
 export default function SignupPage() {
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleSignup = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // 1. Check karein ke password aur confirm password match hotay hain ya nahi
+    if (password !== confirmPassword) {
+      setErrorMsg("Passwords match nahi ho rahe!");
+      return;
+    }
+
+    // 2. Demo message hatane ke liye yahan asli database ya API check aayega
+    setErrorMsg('');
+    alert("Signup successfully ho gaya!");
+  };
+
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="text-center text-3xl font-extrabold text-white">
-          Create your <span className="text-blue-500">SmsPortal</span> account
-        </h2>
-        <p className="mt-2 text-center text-sm text-slate-400">
-          Already have an account?{' '}
-          <Link href="/login" className="font-medium text-blue-400 hover:text-blue-300">
-            Sign in here
-          </Link>
-        </p>
-      </div>
+    <div style={{ padding: '40px', maxWidth: '400px', margin: 'auto' }}>
+      <h2>Sign Up</h2>
+      
+      {errorMsg && <p style={{ color: 'red' }}>{errorMsg}</p>}
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-slate-900 border border-slate-800 py-8 px-4 shadow sm:rounded-xl sm:px-10">
-          <form className="space-y-6" onSubmit={(e) => { e.preventDefault(); alert("Demo Sign Up successful!"); }}>
-            <div>
-              <label className="block text-sm font-medium text-slate-300">Your Name</label>
-              <div className="mt-1">
-                <input
-                  type="text"
-                  required
-                  placeholder="Anees"
-                  className="appearance-none block w-full px-3 py-2 border border-slate-700 rounded-lg bg-slate-950 text-white placeholder-slate-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-slate-300">Email Address</label>
-              <div className="mt-1">
-                <input
-                  type="email"
-                  required
-                  placeholder="anees@example.com"
-                  className="appearance-none block w-full px-3 py-2 border border-slate-700 rounded-lg bg-slate-950 text-white placeholder-slate-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-slate-300">Password</label>
-              <div className="mt-1">
-                <input
-                  type="password"
-                  required
-                  placeholder="••••••••"
-                  className="appearance-none block w-full px-3 py-2 border border-slate-700 rounded-lg bg-slate-950 text-white placeholder-slate-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                />
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition"
-              >
-                Create Account
-              </button>
-            </div>
-          </form>
-
-          <div className="mt-6">
-            <Link href="/" className="w-full flex justify-center text-sm text-slate-400 hover:text-slate-200">
-              ← Back to Home
-            </Link>
-          </div>
+      <form onSubmit={handleSignup}>
+        {/* Username Box */}
+        <div style={{ marginBottom: '15px' }}>
+          <label>Username:</label>
+          <input 
+            type="text" 
+            value={username} 
+            onChange={(e) => setUsername(e.target.value)} 
+            required 
+            style={{ width: '100%', padding: '8px' }}
+          />
         </div>
-      </div>
+
+        {/* Email Box */}
+        <div style={{ marginBottom: '15px' }}>
+          <label>Email:</label>
+          <input 
+            type="email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            required 
+            style={{ width: '100%', padding: '8px' }}
+          />
+        </div>
+
+        {/* Password Box */}
+        <div style={{ marginBottom: '15px', position: 'relative' }}>
+          <label>Password:</label>
+          <input 
+            type={showPassword ? "text" : "password"} 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
+            style={{ width: '100%', padding: '8px' }}
+          />
+          {/* Eye Button (Show/Hide Password) */}
+          <span 
+            onClick={() => setShowPassword(!showPassword)} 
+            style={{ position: 'absolute', right: '10px', top: '32px', cursor: 'pointer' }}
+          >
+            {showPassword ? "🙈" : "👁️"}
+          </span>
+        </div>
+
+        {/* Confirm Password Box */}
+        <div style={{ marginBottom: '15px' }}>
+          <label>Confirm Password:</label>
+          <input 
+            type={showPassword ? "text" : "password"} 
+            value={confirmPassword} 
+            onChange={(e) => setConfirmPassword(e.target.value)} 
+            required 
+            style={{ width: '100%', padding: '8px' }}
+          />
+        </div>
+
+        <button type="submit" style={{ width: '100%', padding: '10px', background: 'blue', color: 'white' }}>
+          Sign Up
+        </button>
+      </form>
     </div>
   );
 }
